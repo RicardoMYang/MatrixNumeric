@@ -30,7 +30,7 @@ int main() {
     cout << "矩阵1:" << endl;
     m1.show();
     
-    int height2;int width2;
+    /*int height2;int width2;
     cout << "输入第2个矩阵的高度：" << endl;
     cin >> height2;
     cout << "输入第2个矩阵的宽度：" << endl;
@@ -60,7 +60,10 @@ int main() {
         cout << "输入向量第" << i << "个元素：" << endl;
         cin >> v[i];
     }
-    (m1 * v).show();
+    (m1 * v).show();*/
     
+    m1.LU().show();
+    
+    cout << "行列式为："<< m1.det() << endl;
     return 0;
 }
