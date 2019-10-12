@@ -46,12 +46,12 @@ int main() {
     
     Matrix m3 = m1 + m2;
     cout << "矩阵之和：" << endl;
-    m3.show();
+    printMatrix(m3);
     
     Matrix m4 = m1 * m2;
     cout << "矩阵之积：" << endl;
-    m4.show();
-    
+    printMatrix(m4);
+    return 0;*/
     cout << "输入向量的长度：" << endl;
     int length;
     cin >> length;
@@ -60,10 +60,5 @@ int main() {
         cout << "输入向量第" << i << "个元素：" << endl;
         cin >> v[i];
     }
-    (m1 * v).show();*/
-    
-    m1.LU().show();
-    
-    cout << "行列式为："<< m1.det() << endl;
-    return 0;
+    (m1 * v).show();
 }

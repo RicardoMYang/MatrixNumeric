@@ -14,15 +14,15 @@
 
 using std::vector;
 
-vector<vector<double>> multiply(const vector<vector<double>>& v1, const vector<int> pos1, const vector<vector<double>>& v2, const vector<int> pos2);
+vector<vector<double>> multiply(const vector<vector<double>>& v1, const vector<vector<double>>& v2);
 
 class Matrix{
 private:
     vector<vector<double>> data;
 
-public:
-    int height;
-    int width;
+    public:
+    unsigned long height;
+    unsigned long width;
     Matrix(vector<vector<double>> _d);
     vector<double> operator[](int i) const;
     Matrix operator+(const Matrix& m) const;
@@ -31,8 +31,6 @@ public:
     Matrix operator*(int x) const;
     Matrix operator*(const vector<double>& v) const;
     Matrix transpose() const;
-    vector<vector<double>> toVector() const;
-    Matrix LU() const;
     double det() const;
     void show() const;
 };

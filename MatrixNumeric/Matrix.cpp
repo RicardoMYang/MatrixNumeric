@@ -8,17 +8,17 @@
 
 #include "Matrix.hpp"
 #include <iostream>
-//#include <vector>
+#include <vector>
 using std::vector;
 using std::cout;
 using std::endl;
 
-vector<vector<double>> multiply(const vector<vector<double>>& v1, const vector<int> pos1, const vector<vector<double>>& v2, const vector<int> pos2){
-    vector<vector<double>> v(pos1[1] - pos1[0] + 1, vector<double>(pos2[3] - pos2[2] + 1, 0));
-    for(int i = 0;i < pos1[1] - pos1[0] + 1;i++){
-        for(int j = 0;j < pos2[3] - pos2[2] + 1;j++){
-            for(int k = 0;k < pos1[3] - pos1[2] + 1;k++){
-                v[i][j] += v1[pos1[0] + i][pos1[2] + k] * v2[pos2[0] + k][pos2[2] + j];
+vector<vector<double>> multiply(const vector<vector<double>>& v1, const vector<vector<double>>& v2){
+    vector<vector<double>> v(v1.size(), vector<double>(v2[0].size(), 0));
+    for(int i = 0;i < v1.size();i++){
+        for(int j = 0;j < v2[0].size();j++){
+            for(int k = 0;k < v2.size();k++){
+                v[i][j] += v1[i][k] * v2[k][j];
             }
         }
     }
@@ -28,7 +28,7 @@ vector<vector<double>> multiply(const vector<vector<double>>& v1, const vector<i
 Matrix::Matrix(vector<vector<double>> _data){
     data = _data;
     height = _data.size();
-    int _width = _data[0].size();
+    unsigned long _width = _data[0].size();
     for(int i = 0;i < height;i++){
         if(_data[i].size() != width){
             
@@ -74,7 +74,7 @@ Matrix Matrix::operator*(const Matrix& m) const{
         throw "Ivalid Dimention!";
     }
     vector<vector<double>> d2(height, vector<double>(m.width));
-    d2 = multiply(data, vector<int>{0, height - 1, 0, width - 1}, m.toVector(), vector<int>{0, m.height - 1, 0, m.width - 1});
+    
     return Matrix(d2);
 }
 
@@ -83,7 +83,7 @@ Matrix Matrix::operator*(const vector<double>& v) const{
     for(int i = 0;i < v.size();i++){
         v_[i][0] = v[i];
     }
-    vector<vector<double>> vNew = multiply(data, vector<int>{0, height - 1, 0, width - 1}, v_, vector<int>{0, width - 1, 0, 0});
+    vector<vector<double>> vNew = multiply(data, v_);
     return Matrix(vNew);
 }
 
@@ -105,36 +105,6 @@ Matrix Matrix::transpose() const{
         }
     }
     return Matrix(d2);
-}
-
-vector<vector<double>> Matrix::toVector() const{
-    return data;
-}
-
-Matrix Matrix::LU() const{
-    if(height != width){
-        throw "Only Square Matrix can do LU decomposition!";
-    }
-    vector<vector<double>> d = data;
-    for(int i = 0;i < height - 1;i++){
-        for(int j = i + 1;j < height;j++){
-            d[j][i] /= d[i][i];
-        }
-        vector<vector<double>> d2 = multiply(d, vector<int>{i + 1, height - 1, i, i}, d, vector<int>{i, i, i + 1, height - 1, });
-        for(int j = i + 1;j < height;j++){
-            for(int k = i + 1;k < height;k++){
-                d[j][k] -= d2[j - i - 1][k - i - 1];
-            }
-        }
-    }
-    return Matrix(d);
-}
-
-double Matrix::det() const{
-    Matrix m = LU();
-    double result = 1;
-    for(int i = 0;i < height;i++) result *= m[i][i];
-    return result;
 }
 
 void Matrix::show() const{
